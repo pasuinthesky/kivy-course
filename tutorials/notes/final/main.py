@@ -17,6 +17,12 @@ from kivy.properties import ListProperty, StringProperty, \
 from kivy.uix.boxlayout import BoxLayout
 from kivy.uix.floatlayout import FloatLayout
 from kivy.clock import Clock
+from kivy.uix.behaviors import ButtonBehavior
+from kivy.uix.image import Image
+
+
+class IconButton(ButtonBehavior, Image):
+    pass
 
 
 class MutableTextInput(FloatLayout):
@@ -76,14 +82,21 @@ class Notes(Screen):
         return [{
             'note_index': index,
             'note_content': item['content'],
-            'note_title': item['title']}
-            for index, item in enumerate(self.data)]
+            'note_title': item['title']
+        } for index, item in enumerate(self.data)]
 
     data_for_widgets = AliasProperty(_get_data_for_widgets, bind=['data'])
 
 
-class NoteApp(App):
+class PicView(Screen):
+    pass
 
+
+class VideoView(Screen):
+    pass
+
+
+class NoteApp(App):
     def build(self):
         self.notes = Notes(name='notes')
         self.load_notes()
@@ -117,11 +130,24 @@ class NoteApp(App):
         if self.root.has_screen(name):
             self.root.remove_widget(self.root.get_screen(name))
 
-        view = NoteView(
-            name=name,
-            note_index=note_index,
-            note_title=note.get('title'),
-            note_content=note.get('content'))
+        view = NoteView(name=name,
+                        note_index=note_index,
+                        note_title=note.get('title'),
+                        note_content=note.get('content'))
+
+        self.root.add_widget(view)
+        self.transition.direction = 'left'
+        self.root.current = view.name
+
+    def show_pic(self):
+        view = PicView()
+
+        self.root.add_widget(view)
+        self.transition.direction = 'left'
+        self.root.current = view.name
+
+    def show_video(self):
+        view = VideoView()
 
         self.root.add_widget(view)
         self.transition.direction = 'left'
