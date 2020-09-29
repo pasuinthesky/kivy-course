@@ -35,10 +35,33 @@
         on_focus: root.check_focus_and_view(self)
 
 <PicView>:
-    Image:
-        pos: self.pos
-        size: self.size
-        source: 'data/download.png'
+    BoxLayout:
+
+        orientation: 'vertical'
+
+        BoxLayout:
+
+            orientation: 'horizontal'
+            size_hint_y: None
+            height: '48dp'
+            padding: '5dp'
+
+            canvas:
+                Color:
+                    rgb: .3, .3, .3
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
+
+            Button:
+                text: '<'
+                size_hint_x: None
+                width: self.height
+                on_release: app.go_notes()
+        Image:
+            pos: self.pos
+            size: self.size
+            source: 'data/download.png'
 #    canvas:
 #        Rectangle:
 #            pos: self.pos
@@ -47,47 +70,70 @@
             
 <VideoView>:
     BoxLayout:
+
         orientation: 'vertical'
-        spacing: 5
-        padding: 5
-
-        Video:
-            #pos: self.pos
-            #size: self.size
-            id: myvideo
-            source: 'data/cityCC0.mpg'
-            allow_stretch: True
-            on_eos: self.play = True
 
         BoxLayout:
+
+            orientation: 'horizontal'
             size_hint_y: None
-            height: 30
+            height: '48dp'
+            padding: '5dp'
 
-            Label:
-                id: mylabel
-                text: str(myvideo.position)
+            canvas:
+                Color:
+                    rgb: .3, .3, .3
+                Rectangle:
+                    pos: self.pos
+                    size: self.size
 
-            Slider:
-                value: myvideo.position
-                max: myvideo.duration
-                on_value: print("data/cityCC0.mpg")
-
+            Button:
+                text: '<'
+                size_hint_x: None
+                width: self.height
+                on_release: app.go_notes()
         BoxLayout:
-            size_hint_y: None
-            height: 50
+            orientation: 'vertical'
             spacing: 5
+            padding: 5
 
-            ToggleButton:
-                group: 'video'
-                text: 'Play'
-                state: 'down' if myvideo.play else 'normal'
-                on_press: myvideo.play = True
+            Video:
+                #pos: self.pos
+                #size: self.size
+                id: myvideo
+                source: 'data/BMTU3552.MP4'
+                allow_stretch: True
+                on_eos: self.play = True
 
-            ToggleButton:
-                group: 'video'
-                text: 'Stop'
-                state: 'down' if not myvideo.play else 'normal'
-                on_press: myvideo.play = False
+            BoxLayout:
+                size_hint_y: None
+                height: 30
+
+                Label:
+                    id: mylabel
+                    text: str(myvideo.position)
+
+                Slider:
+                    value: myvideo.position
+                    max: myvideo.duration
+                    on_value: print("data/BMTU3552.MP4")
+
+            BoxLayout:
+                size_hint_y: None
+                height: 50
+                spacing: 5
+
+                ToggleButton:
+                    group: 'video'
+                    text: 'Play'
+                    state: 'down' if myvideo.play else 'normal'
+                    on_press: myvideo.play = True
+
+                ToggleButton:
+                    group: 'video'
+                    text: 'Stop'
+                    state: 'down' if not myvideo.play else 'normal'
+                    on_press: myvideo.play = False
 
 <NoteView>:
 
@@ -201,11 +247,18 @@
                 width: self.height
                 on_release: app.add_note()
 
-            IconButton:
-                source: 'data/hiclipart.com.png'
+            Button:
+                text: 'Pic'
                 size_hint_x: None
                 width: self.height
                 on_release: app.show_pic()
+
+            Button:
+                text: 'Video'
+                size_hint_x: None
+                width: self.height
+                on_release: app.show_video()
+
 
         RecycleView:
             data: root.data_for_widgets
